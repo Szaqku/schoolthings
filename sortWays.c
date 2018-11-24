@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void sortWstawianie(int *tab, int n){
+void sortWybieranie(int *tab, int n){
     int min;
     int tmp;
     for(int i = 0; i < n-1; i++){
