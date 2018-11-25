@@ -14,6 +14,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void sortWstawianie(int *tab, int n){
+    int klucz;
+    int j;
+    for(int i = 1;i < n;i++){
+        klucz = tab[i];
+        j = i-1;
+        while(j >= 0 && tab[j]>klucz){
+            tab[j+1] = tab[j];
+            j--;
+        }
+        tab[j+1] = klucz;
+    }
+}
+
 void sortWybieranie(int *tab, int n){
     int min;
     int tmp;
@@ -41,7 +55,7 @@ void printArray(int *tab,int n){
 
 int main(void) {
 
-    int tab[] = {1,5,2,3,4,1,1,1};
+    int tab[] = {1,5,2,7,7,3,4,1,1,1};
     int n = sizeof(tab)/sizeof(int);
     printArray(tab,n);
     sortWstawianie(tab,n);
