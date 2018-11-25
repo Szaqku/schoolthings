@@ -14,13 +14,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void sortWstawianie(int *tab){
-    int n = sizeof(tab)/sizeof(int);
+void sortWstawianie(int *tab, int n){
+    int klucz;
+    int j;
+    for(int i = 1;i < n;i++){
+        klucz = tab[i];
+        j = i-1;
+        while(j >= 0 && tab[j]>klucz){
+            tab[j+1] = tab[j];
+            j--;
+        }
+        tab[j+1] = klucz;
+    }
+}
+
+void sortWybieranie(int *tab, int n){
     int min;
     int tmp;
-    for(int i = 0; i < n; i++){
-        int min = i;
-        for(int j = 0; j < n-1;j++){
+    for(int i = 0; i < n-1; i++){
+        min = i;
+        for(int j = i+1; j < n; j++){
             if(tab[min] > tab[j]){
                 min = j;
             }
@@ -33,20 +46,20 @@ void sortWstawianie(int *tab){
     }
 }
 
-void printArray(int tab[]){
-    int n = sizeof(tab)/sizeof(int);
+void printArray(int *tab,int n){
     printf("\n");
     for(int i = 0 ; i < n ; i++)
         printf(" %d |",tab[i]);
     printf("\n");
 }
 
-int main(int argc, char** argv) {
+int main(void) {
 
-    int tab[] = {1,5,2,3,4,1,1,1};
-    printArray(tab);
-    sortWstawianie();
-    
+    int tab[] = {1,5,2,7,7,3,4,1,1,1};
+    int n = sizeof(tab)/sizeof(int);
+    printArray(tab,n);
+    sortWstawianie(tab,n);
+    printArray(tab,n);    
     return (EXIT_SUCCESS);
 }
 
