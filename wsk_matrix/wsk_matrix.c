@@ -6,7 +6,7 @@
 	void matrixFree(int **M,int m);
 	int **createMatrix(int m, int n);
 	void printMatrix(int **M,int m,int n);
-	int** mnozenieMacierzy(int **A, int**B, int i, int j, int n);
+	int **mnozenieMacierzy(int **A, int**B, int i, int j, int n);
 
 int main(int argc, char *argv[]) {
 
@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 	scanf("%d %d %d",&m,&n,&k); 
 	
 	int **A = createMatrix(m,n);
-	int **B = createMatrix(m,n);
+	int **B = createMatrix(n,k);
 	 
 	readDataToMatrix(A,m,n);
 	readDataToMatrix(B,n,k);
