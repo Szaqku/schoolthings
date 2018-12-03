@@ -4,9 +4,9 @@
 	void readDataToMatrix(int **M, int m, int n);
 	int mnozenie(int **A,int **B, int i,int j, int n);
 	void matrixFree(int **M,int m);
-	int **createMatrix(int m, int n);
+	int **createMatrix(int **M, int m, int n);
 	void printMatrix(int **M,int m,int n);
-	int **mnozenieMacierzy(int **A, int**B, int i, int j, int n);
+	int **mnozenieMacierzy(int **A, int**B, int i, int j, int n, int **C);
 
 int main(int argc, char *argv[]) {
 
@@ -16,13 +16,13 @@ int main(int argc, char *argv[]) {
 	printf("Podaj m,n,k: w formacie: m n k\n");
 	scanf("%d %d %d",&m,&n,&k); 
 	
-	int **A = createMatrix(m,n);
-	int **B = createMatrix(n,k);
+	int **A = createMatrix(A,m,n);
+	int **B = createMatrix(B,n,k);
 	 
 	readDataToMatrix(A,m,n);
 	readDataToMatrix(B,n,k);
 	 
-	C = mnozenieMacierzy(A,B,m,n,k);
+	C = mnozenieMacierzy(A,B,m,n,k,C);
 	
 	printf("\n\nWynik:\n");
 	
@@ -50,8 +50,8 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	int **mnozenieMacierzy(int **A, int**B, int m, int n, int k){
-		int **C = createMatrix(m,n);
+	int **mnozenieMacierzy(int **A, int**B, int m, int n, int k,int **C){
+		C = createMatrix(C,m,n);
 		int i = 0;
 		int j = 0;
 		for(;i < m;i++){
@@ -92,8 +92,8 @@ int main(int argc, char *argv[]) {
 		free(M);
 	}
 	
-	int **createMatrix(int m, int n){
-		int **M = malloc(m*sizeof(int));
+	int **createMatrix(int **M,int m, int n){
+		M = malloc(m*sizeof(int));
 		for(int i = 0 ; i < n; i++){
 			*(M+i) = malloc(n*sizeof(int));	
 		}
