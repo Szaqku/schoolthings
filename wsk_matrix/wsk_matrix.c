@@ -1,134 +1,101 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+	void readDataToMatrix(int **M, int m, int n);
+	int mnozenie(int **A,int **B, int i,int j, int n);
+	void matrixFree(int **M,int m);
+	int **createMatrix(int **M, int m, int n);
+	void printMatrix(int **M,int m,int n);
+	int **mnozenieMacierzy(int **A, int**B, int i, int j, int n, int **C);
 
 int main(int argc, char *argv[]) {
-//	int A[100][100];
-//	int B[100][100];
-//	int C[100][100];
-	 
-//	int A[3][3] = {{1,1,1},{3,1,4},{5,6,1}};
-//	int B[3][3] = {{2,1,3},{5,2,2},{6,4,1}};
-//	int C[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
-	// 1 1 1 3 1 4 5 6 1 
-	// 2 1 3 5 2 2 6 4 1 
-	// 3 3 3 1 1 1 3 1 4 5 6 1 2 1 3 5 2 2 6 4 1
+
 	int m,n,k;
-	 
+	int **C;
+	
 	printf("Podaj m,n,k: w formacie: m n k\n");
 	scanf("%d %d %d",&m,&n,&k); 
+	
+	int **A = createMatrix(A,m,n);
+	int **B = createMatrix(B,n,k);
 	 
-	int i = 0;
-	int **A = malloc(m*sizeof(int));
-	for(;i<m;i++){
-		*(A+i) = malloc(n*sizeof(int));
-	}
-	i = 0;
-	int **B = malloc(n*sizeof(int));
-	for(;i<n;i++){
-		*(B+i) = malloc(k*sizeof(int));
-	}
-	i = 0;
-	int **C = malloc(m*sizeof(int));
-	for(;i<m;i++){
-		*(C+i) = malloc(k*sizeof(int));
-	}
-//	 int **B = createMatrix(n,k);
-//	 int **C = createMatrix(m,k); 
+	readDataToMatrix(A,m,n);
+	readDataToMatrix(B,n,k);
 	 
-	 int v1 = 0;
-	 int v2 = 0;
-	 for(;v1 < m; v1++){
-	 	v2 = 0;
-	 	for(;v2 < n; v2++){
-	 		scanf("%d",(*(A+v1)+v2));
-		 }
-	 }
-	 v1 = 0;
-	 v2 = 0;
-	 for(;v1 < n; v1++){
-	 	v2 = 0;
-	 	for(;v2 < k; v2++){
-	 		scanf("%d",(*(B+v1)+v2));
-		 }
-	 } 
-	 
-	i = 0;
-	int j = 0;
-	for(;i < m;i++){
-		j = 0;
-		for(;j < k;j++){
-	 		*(*(C+i)+j) = mnozenie(A,B,i,j,n);	
-		}
-	}
+	C = mnozenieMacierzy(A,B,m,n,k,C);
 	
 	printf("\n\nWynik:\n");
 	
-	i = 0;
-	j = 0;
-	for(;i < m;i++){
-		int j = 0;
-		for(;j < n;j++){
-	 		printf("%3d ",*(*(A+i)+j));
-		}
-		printf("\n");
-	}
+	printMatrix(A,m,n);
 	printf("\n");
-	i = 0;
-	j = 0;
-	for(;i < n;i++){
-		int j = 0;
-		for(;j < k;j++){
-	 		printf("%3d ",*(*(B+i)+j));
-		}
-		printf("\n");
-	}
+	printMatrix(B,n,k);
 	printf("\n");
-    i = 0;
-	j = 0;
-	for(;i < m;i++){
-		int j = 0;
-		for(;j < k;j++){
-	 		printf("%3d ",*(*(C+i)+j));
-		}
-		printf("\n");
-	}
+    printMatrix(C,m,k);
 	 
-	 	for(;i<m;i++){
-			free(*(A+i));
-		}
-		free(A);
-	 
-		 for(;i<n;i++){
-			free(*(B+i));
-		}
-		free(B);
-		
-		for(;i<m;i++){
-			free(*(C+i));
-		}
-		free(C);
-	
+	matrixFree(A,m);
+	matrixFree(B,k);
+	matrixFree(C,m);
 	 
 	return 0;
-	
-	
 }
+
+	void readDataToMatrix(int **M, int m, int n){
+		int v1 = 0;
+		int v2 = 0;
+		for(;v1 < m; v1++){
+			v2 = 0;
+			for(;v2 < n; v2++){
+		 		scanf("%d",(*(M+v1)+v2));
+			}
+		}
+	}
+
+	int **mnozenieMacierzy(int **A, int**B, int m, int n, int k,int **C){
+		C = createMatrix(C,m,n);
+		int i = 0;
+		int j = 0;
+		for(;i < m;i++){
+			j = 0;
+			for(;j < k;j++){
+		 		*(*(C+i)+j) = mnozenie(A,B,i,j,n);	
+			}
+		}
+		return C;
+	}
+
+	void printMatrix(int **M,int m,int n){
+		int i = 0;
+		int j = 0;
+		for(;i < m;i++){
+			int j = 0;
+			for(;j < n;j++){
+		 		printf("%3d ",*(*(M+i)+j));
+			}
+			printf("\n");
+		}
+	}
 
 	int mnozenie(int **A,int **B, int i,int j, int n){
 		int wynik = 0;
 		int h = 0;
 		for(;h<n;h++){
-			wynik += (*(*(A+i)+h)) * (*(*(A+h)+j));
+			wynik += (*(*(A+i)+h)) * (*(*(B+h)+j));
 		}
 		return wynik;
 	}
 	
-	void matrixFree(int** M,int m){
+	void matrixFree(int **M,int m){
 		int i = 0;
 		for(;i<m;i++){
 			free(*(M+i));
 		}
 		free(M);
+	}
+	
+	int **createMatrix(int **M,int m, int n){
+		M = malloc(m*sizeof(int));
+		for(int i = 0 ; i < n; i++){
+			*(M+i) = malloc(n*sizeof(int));	
+		}
+		return M;
 	}
