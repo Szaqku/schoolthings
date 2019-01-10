@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 		
 	}
 	
-	printf("\n Suma: %d",suma);
+	printf("\nSuma: %d",suma);
 	
 	fclose(f);
 }
