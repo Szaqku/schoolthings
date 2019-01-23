@@ -5,7 +5,6 @@
 
 struct Element{
 	int value;
-	struct Element *next;
 	struct Element *prev;
 };
 
@@ -15,27 +14,27 @@ struct Element *bottom = NULL;
 void put(int v){
 	struct Element *element = malloc(sizeof(struct Element));
 	element->value = v;
-	if(top == NULL){
-		element->next = NULL;
+	if(top == NULL && bottom == NULL){
 		top = element;
 		bottom = element;
 		printf("Dodano %d. \n",element->value);
 		return;
-	}
-	element->next = bottom;	
+	}	
 	bottom->prev = element;
-	bottom = element;
 	element->prev = NULL;
+	bottom = element;
 	printf("Dodano %d. \n",element->value);
 }
 
 int get(){
-	if(top == NULL){
+	if(top == NULL || bottom == NULL){
 		bottom = NULL;
 		printf("Error. Brak elementow.");
 		return -1;
 	}
 	struct Element *now = top;
+	if(now->prev == NULL)
+		bottom = NULL;
 	top = now->prev;
 	int val = now->value;
 	free(now);
@@ -43,20 +42,9 @@ int get(){
 	return val;
 }
 
-int peek(){
-	
-}
 
 
 int main(int argc, char *argv[]) {
-	
-	/*put(5);
-	put(15);
-	put(25);
-	printf("TOP: %d\n",top->value);
-	printf("under TOP: %d\n",top->prev->value);
-	printf("BOT: %d\n",bottom->value);
-	*/
 	
 	int sterownik = 0;
 	int d = 0;
