@@ -14,7 +14,7 @@ struct Element *bottom = NULL;
 void put(int v){
 	struct Element *element = malloc(sizeof(struct Element));
 	element->value = v;
-	if(top == NULL && bottom == NULL){
+	if(top == NULL || bottom == NULL){
 		top = element;
 		bottom = element;
 		printf("Dodano %d. \n",element->value);
@@ -27,9 +27,8 @@ void put(int v){
 }
 
 int get(){
-	if(top == NULL || bottom == NULL){
-		bottom = NULL;
-		printf("Error. Brak elementow.");
+	if(top == NULL){
+		printf("Error. Brak elementow.\n");
 		return -1;
 	}
 	struct Element *now = top;
@@ -51,6 +50,7 @@ int main(int argc, char *argv[]) {
 	while(1){
 		printf("Mozliwosci programu to: \n| 1 push \n| 2 pop \n| else END \n");
 		scanf("%d",&sterownik);
+		system("cls");
 		switch(sterownik){
 			case 1:
 				printf("Podaj liczbe: ");
