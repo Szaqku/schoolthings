@@ -2,8 +2,10 @@
 #include <queue>
 #include <string>
 #include <vector>
+#include "randomdata.h"
 
 using namespace std;
+
 
 class zawodnik{
     private:
@@ -16,6 +18,9 @@ class zawodnik{
     string dataUrodzenia;
 
 public:
+    zawodnik(zawodnik& z);
+    ~zawodnik(){};
+    zawodnik() : zawodnik("John","Doe",1,2,3,"43895389573","21.12.1222"){};
     zawodnik(string imie,string nazwisko,int miejsce,int miejsce2,int miejsce3,string pesel,string data){
         this->imie = imie;
         this->nazwisko = nazwisko;
@@ -43,18 +48,33 @@ public:
 
 };
 
+zawodnik::zawodnik(zawodnik& z){
+    this->imie = z.imie;
+    this->nazwisko = z.nazwisko;
+    this->miejsce1 = z.miejsce1;
+    this->miejsce2 = z.miejsce2;
+    this->miejsce3 = z.miejsce3;
+    this->dataUrodzenia = z.dataUrodzenia;
+    this->pesel = z.pesel;
+}
 
 
 int main(int argc, char** argv) {
 
     int n = 5;
-    vector<zawodnik> zawodnicy;
+    vector<zawodnik*> zawodnicy;
     for(int i = 0 ; i < n ; i++){
-        zawodnicy.push_back(zawodnik("Jan"+to_string(i),"Nazwisko",1,2,3,"345353553","12.12.2012"));
+
+        zawodnicy.push_back(new zawodnik("Jan"+to_string(i),"Nazwisko",1,2,3,"345353553","12.12.2012"));
     }
 
-    for(zawodnik zawodnik: zawodnicy)
-        zawodnik.printZawodnik();
+    zawodnik* z = new zawodnik();
+    zawodnicy.push_back(z);
+    zawodnik* z1 = new zawodnik(*z);
+    zawodnicy.push_back(z1);
+
+    for(auto zawodnik: zawodnicy)
+        zawodnik->printZawodnik();
 
 	return 0;
 }

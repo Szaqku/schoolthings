@@ -16,9 +16,6 @@ class zawodnik{
     string dataUrodzenia;
 
 public:
-    zawodnik(zawodnik& z){};
-    ~zawodnik(){};
-    zawodnik() : zawodnik("John","Doe",1,2,3,"43895389573","21.12.1222"){};
     zawodnik(string imie,string nazwisko,int miejsce,int miejsce2,int miejsce3,string pesel,string data){
         this->imie = imie;
         this->nazwisko = nazwisko;
@@ -53,12 +50,8 @@ int main(int argc, char** argv) {
     int n = 5;
     vector<zawodnik> zawodnicy;
     for(int i = 0 ; i < n ; i++){
-
         zawodnicy.push_back(zawodnik("Jan"+to_string(i),"Nazwisko",1,2,3,"345353553","12.12.2012"));
     }
-
-    zawodnik z;
-    zawodnicy.push_back(z);
 
     for(zawodnik zawodnik: zawodnicy)
         zawodnik.printZawodnik();
