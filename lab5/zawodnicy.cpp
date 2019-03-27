@@ -8,10 +8,9 @@
 
 using namespace std;
 
-
-class zawodnik{
-    friend void zapiszDoPliku(string,vector<zawodnik*>);
-    private:
+class Zawodnik{
+    friend void zapiszDoPliku(string,vector<Zawodnik*>);
+    
     string imie;
     string nazwisko;
     int miejsce1;
@@ -21,10 +20,18 @@ class zawodnik{
     string dataUrodzenia;
 
 public:
-    zawodnik(zawodnik& z);
-    ~zawodnik(){};
-    zawodnik() : zawodnik("John","Doe",1,2,3,"43895389573","21.12.1222"){};
-    zawodnik(string imie,string nazwisko,int miejsce,int miejsce2,int miejsce3,string pesel,string data){
+    Zawodnik(Zawodnik& z);
+    ~Zawodnik(){};
+    Zawodnik();
+    Zawodnik(string,string,int,int,int,string,string);
+    void printZawodnik();
+    void printResults();
+
+    class Converter;
+};
+
+Zawodnik::Zawodnik() : Zawodnik("John","Doe",1,2,3,"43895389573","21.12.1222"){};
+Zawodnik::Zawodnik(string imie,string nazwisko,int miejsce,int miejsce2,int miejsce3,string pesel,string data){
         this->imie = imie;
         this->nazwisko = nazwisko;
         this->miejsce1 = miejsce;
@@ -33,40 +40,7 @@ public:
         this->pesel = pesel;
         this->dataUrodzenia = data;
     }
-    void printZawodnik(){
-        cout<<this->imie
-            <<" "<<this->nazwisko
-            <<" "<<this->miejsce1
-            <<" "<<this->miejsce2
-            <<" "<<this->miejsce3
-            <<" "<<this->pesel
-            <<" " <<this->dataUrodzenia<<endl;
-    }
-    void printResults(){
-        int suma = (this->miejsce1)
-        +this->miejsce2
-        +this->miejsce3;
-        cout<<this->nazwisko<<" suma:"<<suma<<endl;
-    }
-
-    class Converter{
-    public:
-        static zawodnik* convertLineToZawodnik(string line){
-            string zbr[7];
-            int i = 0;
-            string delimiter = ";";
-            size_t pos = 0;
-            while((pos = line.find(delimiter)) != string::npos){
-                zbr[i++] = line.substr(0,pos);
-                line.erase(0,pos + 1);
-            }
-            zbr[i] = line;
-            return new zawodnik(zbr[0],zbr[1],stoi(zbr[2]),stoi(zbr[3]),stoi(zbr[4]),zbr[5],zbr[6]);
-        }
-    };
-};
-
-zawodnik::zawodnik(zawodnik& z){
+Zawodnik::Zawodnik(Zawodnik& z){
     this->imie = z.imie;
     this->nazwisko = z.nazwisko;
     this->miejsce1 = z.miejsce1;
@@ -75,9 +49,41 @@ zawodnik::zawodnik(zawodnik& z){
     this->dataUrodzenia = z.dataUrodzenia;
     this->pesel = z.pesel;
 }
+void Zawodnik::printZawodnik(){
+        cout<<this->imie
+            <<" "<<this->nazwisko
+            <<" "<<this->miejsce1
+            <<" "<<this->miejsce2
+            <<" "<<this->miejsce3
+            <<" "<<this->pesel
+            <<" " <<this->dataUrodzenia<<endl;
+    }
+void Zawodnik::printResults(){
+        int suma = (this->miejsce1)
+        +this->miejsce2
+        +this->miejsce3;
+        cout<<this->nazwisko<<" suma:"<<suma<<endl;
+    }
 
-vector<zawodnik*> wczytajZawodnikowZPliku(string fileName){
-    vector<zawodnik*> zawodnicy;
+class Zawodnik::Converter{
+    public:
+        static Zawodnik* convertLineToZawodnik(string,string);
+};
+
+Zawodnik* Zawodnik::Converter::convertLineToZawodnik(string line,string delimiter){
+    string zbr[7];
+    int i = 0;
+    size_t pos = 0;
+    while((pos = line.find(delimiter)) != string::npos){
+        zbr[i++] = line.substr(0,pos);
+        line.erase(0,pos + 1);
+    }
+    zbr[i] = line;
+    return new Zawodnik(zbr[0],zbr[1],stoi(zbr[2]),stoi(zbr[3]),stoi(zbr[4]),zbr[5],zbr[6]);
+}
+
+vector<Zawodnik*> wczytajZawodnikowZPliku(string fileName){
+    vector<Zawodnik*> zawodnicy;
     ifstream input(fileName);
     if(!input.is_open())
         throw exception();
@@ -85,7 +91,7 @@ vector<zawodnik*> wczytajZawodnikowZPliku(string fileName){
     string line;
     while(!input.eof()){
         input>>line;
-        zawodnicy.push_back(zawodnik::Converter::convertLineToZawodnik(line));
+        zawodnicy.push_back(Zawodnik::Converter::convertLineToZawodnik(line,";"));
     }
 
     input.close();
@@ -93,43 +99,33 @@ vector<zawodnik*> wczytajZawodnikowZPliku(string fileName){
     return zawodnicy;
 }
 
-void zapiszDoPliku(string fileName,vector<zawodnik*> zawodnicy){
+void zapiszDoPliku(string fileName,vector<Zawodnik*> zawodnicy){
     ofstream output(fileName);
     if(!output.is_open())
         throw exception();
-    for(auto zawodnik : zawodnicy)
-        output<<zawodnik->imie<<";"<<zawodnik->nazwisko<<";"<<zawodnik->miejsce1
-            <<";"<<zawodnik->miejsce2<<";"<<zawodnik->miejsce3<<";"<<zawodnik->dataUrodzenia
-            <<";"<<zawodnik->pesel<<endl;
+    for(auto Zawodnik : zawodnicy)
+        output<<Zawodnik->imie
+			<<";"<<Zawodnik->nazwisko
+			<<";"<<Zawodnik->miejsce1
+            <<";"<<Zawodnik->miejsce2
+			<<";"<<Zawodnik->miejsce3
+			<<";"<<Zawodnik->dataUrodzenia
+            <<";"<<Zawodnik->pesel<<endl;
     output.close();
 };
 
 int main(int argc, char** argv) {
 
-    vector<zawodnik*> zawodnicy = wczytajZawodnikowZPliku("input.txt");
+    vector<Zawodnik*> zawodnicy = wczytajZawodnikowZPliku("input.txt");
 
     for(auto z : zawodnicy)
         z->printZawodnik();
 
-        zawodnicy.push_back(new zawodnik());
+    zawodnicy.push_back(new Zawodnik());
     zapiszDoPliku("output.txt",zawodnicy);
 
-//    int n = 5;
-//    vector<zawodnik*> zawodnicy;
-//    for(int i = 0 ; i < n ; i++){
-//
-//        zawodnicy.push_back(new zawodnik("Jan"+to_string(i),"Nazwisko",1,2,3,"345353553","12.12.2012"));
-//    }
-//
-//    zawodnik* z = new zawodnik();
-//    zawodnicy.push_back(z);
-//    zawodnik* z1 = new zawodnik(*z);
-//    zawodnicy.push_back(z1);
-//
-//    for(auto zawodnik: zawodnicy)
-//        zawodnik->printZawodnik();
-//
-//	return 0;
-
-
+	for(auto it = zawodnicy.begin(); it != zawodnicy.end(); it++)
+		delete (*it);
+		
+	zawodnicy.clear();
 }
